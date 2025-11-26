@@ -1,0 +1,1707 @@
+2025-11-24 16:28:39,730 INFO ipython === bench console session ===
+2025-11-24 16:28:39,730 INFO ipython frappe.db.get_value("User", "Administrator", "name")
+2025-11-24 16:28:39,730 INFO ipython === session end ===
+2025-11-24 16:29:37,637 INFO ipython === bench console session ===
+2025-11-24 16:29:37,639 INFO ipython import frappe
+frappe.cache().get("test_key")
+2025-11-24 16:29:37,639 INFO ipython import frappe
+2025-11-24 16:29:37,639 INFO ipython frappe.cache().get("test_key")
+2025-11-24 16:29:37,639 INFO ipython === session end ===
+2025-11-24 17:38:41,822 INFO ipython === bench console session ===
+2025-11-24 17:38:41,831 INFO ipython frappe.db.set_single_value("System Settings", "app_name", "Oravco ERP")
+2025-11-24 17:38:41,831 INFO ipython frappe.db.set_single_value("Website Settings", "app_name", "Oravco ERP")
+2025-11-24 17:38:41,831 INFO ipython frappe.db.commit()
+2025-11-24 17:38:41,831 INFO ipython frappe.clear_cache()
+2025-11-24 17:38:41,831 INFO ipython === session end ===
+2025-11-24 17:59:59,111 INFO ipython === bench console session ===
+2025-11-24 17:59:59,114 INFO ipython # Add Client Script for branding
+script_content = """// Oravco ERP Branding Script
+(function() {
+    'use strict';
+    function replaceTextInNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            if (node.textContent) {
+                node.textContent = node.textContent.replace(/ERPNext/g, 'Oravco ERP');
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                if (node.title) node.title = node.title.replace(/ERPNext/g, 'Oravco ERP');
+                if (node.alt) node.alt = node.alt.replace(/ERPNext/g, 'Oravco ERP');
+                if (node.placeholder) node.placeholder = node.placeholder.replace(/ERPNext/g, 'Oravco ERP');
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    replaceTextInNode(node.childNodes[i]);
+                }
+            }
+        }
+    }
+    function applyBranding() {
+        replaceTextInNode(document.body);
+        if (document.title) document.title = document.title.replace(/ERPNext/g, 'Oravco ERP');
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyBranding);
+    } else {
+        applyBranding();
+    }
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
+                        replaceTextInNode(node);
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+    if (typeof frappe !== 'undefined') {
+        frappe.ready(function() {
+            if (frappe.boot && frappe.boot.apps_info) {
+                Object.keys(frappe.boot.apps_info).forEach(function(app) {
+                    const appInfo = frappe.boot.apps_info[app];
+                    if (appInfo && appInfo.app_title === 'ERPNext') {
+                        appInfo.app_title = 'Oravco ERP';
+                    }
+                });
+            }
+            if (frappe.boot && frappe.boot.sysdefaults && frappe.boot.sysdefaults.app_name === 'ERPNext') {
+                frappe.boot.sysdefaults.app_name = 'Oravco ERP';
+            }
+        });
+    }
+    setInterval(function() {
+        if (document.title) document.title = document.title.replace(/ERPNext/g, 'Oravco ERP');
+    }, 1000);
+})();"""
+
+# Check if already exists
+existing = frappe.db.exists("Client Script", {"dt": "All"})
+if existing:
+    print(f"Script already exists: {existing}")
+else:
+    client_script = frappe.get_doc({
+        "doctype": "Client Script",
+        "dt": "All",
+        "script_type": "Client Script",
+        "script": script_content,
+        "enabled": 1
+    })
+    client_script.insert()
+    frappe.db.commit()
+    print("✓ Client Script created!")
+
+frappe.clear_cache()
+exit()
+2025-11-24 17:59:59,115 INFO ipython === session end ===
+2025-11-24 18:00:19,450 INFO ipython === bench console session ===
+2025-11-24 18:00:19,450 INFO ipython # Add branding script to Website Settings
+website_settings = frappe.get_single("Website Settings")
+
+branding_script = """
+<script>
+// Oravco ERP Branding Script
+(function() {
+    'use strict';
+    function replaceTextInNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            if (node.textContent) {
+                node.textContent = node.textContent.replace(/ERPNext/g, 'Oravco ERP');
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                if (node.title) node.title = node.title.replace(/ERPNext/g, 'Oravco ERP');
+                if (node.alt) node.alt = node.alt.replace(/ERPNext/g, 'Oravco ERP');
+                if (node.placeholder) node.placeholder = node.placeholder.replace(/ERPNext/g, 'Oravco ERP');
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    replaceTextInNode(node.childNodes[i]);
+                }
+            }
+        }
+    }
+    function applyBranding() {
+        replaceTextInNode(document.body);
+        if (document.title) document.title = document.title.replace(/ERPNext/g, 'Oravco ERP');
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyBranding);
+    } else {
+        applyBranding();
+    }
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
+                        replaceTextInNode(node);
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+    if (typeof frappe !== 'undefined') {
+        frappe.ready(function() {
+            if (frappe.boot && frappe.boot.apps_info) {
+                Object.keys(frappe.boot.apps_info).forEach(function(app) {
+                    const appInfo = frappe.boot.apps_info[app];
+                    if (appInfo && appInfo.app_title === 'ERPNext') {
+                        appInfo.app_title = 'Oravco ERP';
+                    }
+                });
+            }
+            if (frappe.boot && frappe.boot.sysdefaults && frappe.boot.sysdefaults.app_name === 'ERPNext') {
+                frappe.boot.sysdefaults.app_name = 'Oravco ERP';
+            }
+        });
+    }
+    setInterval(function() {
+        if (document.title) document.title = document.title.replace(/ERPNext/g, 'Oravco ERP');
+    }, 1000);
+})();
+</script>
+"""
+
+# Check if already exists
+if website_settings.head_html and "Oravco ERP Branding Script" in website_settings.head_html:
+    print("✓ Script already exists")
+else:
+    # Add to head_html
+    current = website_settings.head_html or ""
+    website_settings.head_html = current + "\n" + branding_script
+    website_settings.save()
+    frappe.db.commit()
+    print("✓ Branding script added!")
+
+frappe.clear_cache()
+exit()
+2025-11-24 18:00:19,450 INFO ipython === session end ===
+2025-11-24 18:20:15,303 INFO ipython === bench console session ===
+2025-11-24 18:20:15,303 INFO ipython # Update Workspaces
+workspaces = [
+    {"name": "ERPNext Settings", "label": "Oravco ERP Settings", "title": "Oravco ERP Settings"},
+    {"name": "ERPNext Integrations", "label": "Oravco ERP Integrations", "title": "Oravco ERP Integrations"}
+]
+
+for ws in workspaces:
+    if frappe.db.exists("Workspace", ws["name"]):
+        doc = frappe.get_doc("Workspace", ws["name"])
+        doc.label = ws["label"]
+        doc.title = ws["title"]
+        doc.save()
+        print(f"✓ Updated: {ws['name']}")
+
+# Enhanced branding script
+enhanced_script = """
+<script>
+// Oravco ERP Complete Branding Script
+(function() {
+    'use strict';
+    function replaceTextInNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            if (node.textContent) {
+                node.textContent = node.textContent.replace(/ERPNext/gi, 'Oravco ERP');
+                node.textContent = node.textContent.replace(/Frappe Framework/gi, 'Oravco ERP');
+                node.textContent = node.textContent.replace(/Powered by Frappe/gi, 'Powered by Oravco ERP');
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                if (node.title) {
+                    node.title = node.title.replace(/ERPNext/gi, 'Oravco ERP').replace(/Frappe Framework/gi, 'Oravco ERP');
+                }
+                if (node.alt) {
+                    node.alt = node.alt.replace(/ERPNext/gi, 'Oravco ERP').replace(/Frappe Framework/gi, 'Oravco ERP');
+                }
+                if (node.placeholder) {
+                    node.placeholder = node.placeholder.replace(/ERPNext/gi, 'Oravco ERP');
+                }
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    replaceTextInNode(node.childNodes[i]);
+                }
+            }
+        }
+    }
+    function applyBranding() {
+        replaceTextInNode(document.body);
+        if (document.title) {
+            document.title = document.title.replace(/ERPNext/gi, 'Oravco ERP').replace(/Frappe Framework/gi, 'Oravco ERP');
+        }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyBranding);
+    } else {
+        applyBranding();
+    }
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
+                        replaceTextInNode(node);
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    }
+    if (typeof frappe !== 'undefined') {
+        frappe.ready(function() {
+            if (frappe.boot && frappe.boot.apps_info) {
+                Object.keys(frappe.boot.apps_info).forEach(function(app) {
+                    const appInfo = frappe.boot.apps_info[app];
+                    if (appInfo && (appInfo.app_title === "ERPNext" || appInfo.app_title === "Frappe Framework")) {
+                        appInfo.app_title = "Oravco ERP";
+                    }
+                });
+            }
+            if (frappe.boot && frappe.boot.sysdefaults) {
+                if (frappe.boot.sysdefaults.app_name === "ERPNext" || frappe.boot.sysdefaults.app_name === "Frappe Framework") {
+                    frappe.boot.sysdefaults.app_name = "Oravco ERP";
+                }
+            }
+            setTimeout(function() {
+                document.querySelectorAll('.sidebar-item-label, .workspace-label, .app-title').forEach(function(el) {
+                    if (el.textContent) {
+                        el.textContent = el.textContent.replace(/ERPNext/gi, 'Oravco ERP').replace(/Frappe Framework/gi, 'Oravco ERP');
+                    }
+                });
+            }, 1000);
+        });
+    }
+    setInterval(function() {
+        if (document.title) document.title = document.title.replace(/ERPNext/gi, 'Oravco ERP').replace(/Frappe Framework/gi, 'Oravco ERP');
+    }, 2000);
+})();
+</script>
+"""
+
+# Update Website Settings with enhanced script
+website_settings = frappe.get_single("Website Settings")
+current = website_settings.head_html or ""
+
+# Remove old script if exists
+import re
+current = re.sub(r'<script>.*?Oravco ERP.*?Branding.*?</script>', '', current, flags=re.DOTALL)
+current = current.strip()
+
+website_settings.head_html = current + "\n" + enhanced_script
+website_settings.save()
+
+frappe.db.commit()
+frappe.clear_cache()
+print("✅ All branding updates complete!")
+exit()
+2025-11-24 18:20:15,304 INFO ipython === session end ===
+2025-11-24 18:32:06,848 INFO ipython === bench console session ===
+2025-11-24 18:32:06,857 INFO ipython === session end ===
+2025-11-25 04:47:23,144 INFO ipython === bench console session ===
+2025-11-25 04:47:23,159 INFO ipython # Complete ERPNext to Oravco ERP Replacement - Console Version
+# Copy and paste this entire script into the Frappe console
+
+import frappe
+import re
+
+print("=" * 60)
+print("COMPLETE ERPNext TO Oravco ERP REPLACEMENT")
+print("=" * 60)
+print()
+
+# 1. Update all Workspaces
+print("1. Updating Workspaces...")
+workspaces = frappe.get_all("Workspace", fields=["name", "label", "title"])
+workspace_count = 0
+for ws in workspaces:
+    try:
+        doc = frappe.get_doc("Workspace", ws.name)
+        changed = False
+        if doc.label and "ERPNext" in doc.label:
+            doc.label = doc.label.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if doc.title and "ERPNext" in doc.title:
+            doc.title = doc.title.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if doc.content and "ERPNext" in str(doc.content):
+            doc.content = str(doc.content).replace("ERPNext", "Oravco ERP")
+            changed = True
+        if changed:
+            doc.save()
+            workspace_count += 1
+            print(f"  ✓ Updated: {ws.name}")
+    except Exception as e:
+        print(f"  ⚠ Error updating {ws.name}: {str(e)[:50]}")
+print(f"✓ Updated {workspace_count} workspaces")
+print()
+
+# 2. Update Homepage
+print("2. Updating Homepage...")
+if frappe.db.exists("Homepage", "Homepage"):
+    try:
+        homepage = frappe.get_doc("Homepage", "Homepage")
+        changed = False
+        if homepage.title and "ERPNext" in homepage.title:
+            homepage.title = homepage.title.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if homepage.tag_line and "ERPNext" in homepage.tag_line:
+            homepage.tag_line = homepage.tag_line.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if homepage.description and "ERPNext" in homepage.description:
+            homepage.description = homepage.description.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if changed:
+            homepage.save()
+            print("  ✓ Homepage updated")
+        else:
+            print("  ℹ No changes needed in Homepage")
+    except Exception as e:
+        print(f"  ⚠ Error: {str(e)[:50]}")
+else:
+    print("  ℹ Homepage not found")
+print()
+
+# 3. Update System Settings
+print("3. Updating System Settings...")
+try:
+    system_settings = frappe.get_single("System Settings")
+    system_settings.app_name = "Oravco ERP"
+    system_settings.save()
+    print("  ✓ System Settings updated")
+except Exception as e:
+    print(f"  ⚠ Error: {str(e)[:50]}")
+print()
+
+# 4. Update Website Settings
+print("4. Updating Website Settings...")
+try:
+    website_settings = frappe.get_single("Website Settings")
+    website_settings.app_name = "Oravco ERP"
+    
+    # Ultra-comprehensive branding script
+    ultra_script = """
+<script>
+// Oravco ERP Ultra-Complete Branding Script
+(function() {
+    'use strict';
+    
+    const replacements = [
+        { pattern: /ERPNext/gi, replacement: 'Oravco ERP' },
+        { pattern: /ERP Next/gi, replacement: 'Oravco ERP' },
+        { pattern: /ERP-Next/gi, replacement: 'Oravco ERP' },
+        { pattern: /Frappe Framework/gi, replacement: 'Oravco ERP' },
+        { pattern: /Powered by Frappe/gi, replacement: 'Powered by Oravco ERP' },
+        { pattern: /Built on Frappe/gi, replacement: 'Built on Oravco ERP' }
+    ];
+    
+    function replaceTextInNode(node) {
+        if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+            replacements.forEach(function(r) {
+                node.textContent = node.textContent.replace(r.pattern, r.replacement);
+            });
+        } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE' && node.tagName !== 'NOSCRIPT') {
+            ['title', 'alt', 'placeholder', 'aria-label', 'data-label', 'data-title'].forEach(function(attr) {
+                const val = node[attr] || node.getAttribute(attr);
+                if (val) {
+                    let newVal = val;
+                    replacements.forEach(function(r) {
+                        newVal = newVal.replace(r.pattern, r.replacement);
+                    });
+                    if (newVal !== val) {
+                        if (node[attr]) {
+                            node[attr] = newVal;
+                        } else {
+                            node.setAttribute(attr, newVal);
+                        }
+                    }
+                }
+            });
+            Array.from(node.childNodes).forEach(replaceTextInNode);
+        }
+    }
+    
+    function applyBranding() {
+        replaceTextInNode(document.body);
+        if (document.title) {
+            replacements.forEach(function(r) {
+                document.title = document.title.replace(r.pattern, r.replacement);
+            });
+        }
+        document.querySelectorAll('meta[property="og:title"], meta[name="title"]').forEach(function(meta) {
+            if (meta.content) {
+                replacements.forEach(function(r) {
+                    meta.content = meta.content.replace(r.pattern, r.replacement);
+                });
+            }
+        });
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyBranding);
+    } else {
+        applyBranding();
+    }
+    
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    replaceTextInNode(node);
+                });
+                if (mutation.type === 'characterData') {
+                    replaceTextInNode(mutation.target);
+                }
+            });
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+            attributeFilter: ['title', 'alt', 'aria-label', 'data-label']
+        });
+    }
+    
+    if (typeof frappe !== 'undefined') {
+        frappe.ready(function() {
+            if (frappe.boot && frappe.boot.apps_info) {
+                Object.keys(frappe.boot.apps_info).forEach(function(app) {
+                    const appInfo = frappe.boot.apps_info[app];
+                    if (appInfo && appInfo.app_title) {
+                        replacements.forEach(function(r) {
+                            appInfo.app_title = appInfo.app_title.replace(r.pattern, r.replacement);
+                        });
+                    }
+                });
+            }
+            if (frappe.boot && frappe.boot.sysdefaults && frappe.boot.sysdefaults.app_name) {
+                replacements.forEach(function(r) {
+                    frappe.boot.sysdefaults.app_name = frappe.boot.sysdefaults.app_name.replace(r.pattern, r.replacement);
+                });
+            }
+            setTimeout(function() {
+                document.querySelectorAll('[data-label], .workspace-label, .sidebar-item-label, .app-title, .navbar-brand, h1, h2, h3, h4, h5, h6, .card-title, .page-title').forEach(function(el) {
+                    if (el.textContent) {
+                        replacements.forEach(function(r) {
+                            el.textContent = el.textContent.replace(r.pattern, r.replacement);
+                        });
+                    }
+                });
+                document.querySelectorAll('[title], [data-original-title]').forEach(function(el) {
+                    const title = el.getAttribute('title') || el.getAttribute('data-original-title');
+                    if (title) {
+                        let newTitle = title;
+                        replacements.forEach(function(r) {
+                            newTitle = newTitle.replace(r.pattern, r.replacement);
+                        });
+                        if (newTitle !== title) {
+                            el.setAttribute('title', newTitle);
+                            if (el.getAttribute('data-original-title')) {
+                                el.setAttribute('data-original-title', newTitle);
+                            }
+                        }
+                    }
+                });
+            }, 500);
+            setInterval(function() {
+                document.querySelectorAll('.sidebar-item, .workspace-card, .navbar-item, .workspace-label').forEach(function(el) {
+                    if (el.textContent) {
+                        replacements.forEach(function(r) {
+                            if (r.pattern.test(el.textContent)) {
+                                el.textContent = el.textContent.replace(r.pattern, r.replacement);
+                            }
+                        });
+                    }
+                });
+            }, 2000);
+        });
+    }
+    
+    setInterval(function() {
+        if (document.title) {
+            replacements.forEach(function(r) {
+                document.title = document.title.replace(r.pattern, r.replacement);
+            });
+        }
+    }, 3000);
+})();
+</script>
+"""
+    
+    # Remove old branding scripts
+    current = website_settings.head_html or ""
+    current = re.sub(r'<script>.*?Oravco ERP.*?Branding.*?</script>', '', current, flags=re.DOTALL | re.IGNORECASE)
+    current = current.strip()
+    
+    # Add new script
+    website_settings.head_html = current + "\n" + ultra_script
+    website_settings.save()
+    print("  ✓ Website Settings updated with ultra-comprehensive branding script")
+except Exception as e:
+    print(f"  ⚠ Error: {str(e)[:50]}")
+print()
+
+# 5. Update Navbar Settings
+print("5. Updating Navbar Settings...")
+try:
+    if frappe.db.exists("Navbar Settings", "Navbar Settings"):
+        navbar = frappe.get_single("Navbar Settings")
+        changed = False
+        if hasattr(navbar, 'settings_dropdown'):
+            for item in navbar.settings_dropdown:
+                if item.item_label and "ERPNext" in item.item_label:
+                    item.item_label = item.item_label.replace("ERPNext", "Oravco ERP")
+                    changed = True
+        if changed:
+            navbar.save()
+            print("  ✓ Navbar Settings updated")
+        else:
+            print("  ℹ No changes needed in Navbar Settings")
+    else:
+        print("  ℹ Navbar Settings not found")
+except Exception as e:
+    print(f"  ⚠ Error: {str(e)[:50]}")
+print()
+
+# Commit all changes
+frappe.db.commit()
+frappe.clear_cache()
+
+print("=" * 60)
+print("✅ COMPLETE! All ERPNext references updated to Oravco ERP")
+print("=" * 60)
+print()
+print("Next steps:")
+print("1. Clear your browser cache (Ctrl+Shift+Delete)")
+print("2. Hard refresh the page (Ctrl+Shift+R or Cmd+Shift+R)")
+print("3. Navigate through all pages to verify changes")
+print("4. The JavaScript will catch any remaining references dynamically")
+print()
+2025-11-25 04:47:23,159 INFO ipython === session end ===
+2025-11-25 05:10:33,717 INFO ipython === bench console session ===
+2025-11-25 05:10:33,733 INFO ipython # Find and fix remaining ERPNext references
+import frappe
+
+print("=" * 60)
+print("FINDING AND FIXING REMAINING ERPNext REFERENCES")
+print("=" * 60)
+
+# 1. Workspaces
+print("\n1. Checking Workspaces...")
+workspaces = frappe.get_all("Workspace", fields=["name", "label", "title"])
+fixed = 0
+for ws in workspaces:
+    doc = frappe.get_doc("Workspace", ws.name)
+    changed = False
+    if doc.label and "ERPNext" in doc.label:
+        doc.label = doc.label.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if doc.title and "ERPNext" in doc.title:
+        doc.title = doc.title.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if doc.content and "ERPNext" in str(doc.content):
+        doc.content = str(doc.content).replace("ERPNext", "Oravco ERP")
+        changed = True
+    if changed:
+        doc.save()
+        fixed += 1
+        print(f"  ✓ Fixed: {ws.name}")
+print(f"✓ Fixed {fixed} workspaces")
+
+# 2. Homepage
+print("\n2. Checking Homepage...")
+if frappe.db.exists("Homepage", "Homepage"):
+    homepage = frappe.get_doc("Homepage", "Homepage")
+    changed = False
+    if homepage.title and "ERPNext" in homepage.title:
+        homepage.title = homepage.title.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if homepage.tag_line and "ERPNext" in homepage.tag_line:
+        homepage.tag_line = homepage.tag_line.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if homepage.description and "ERPNext" in homepage.description:
+        homepage.description = homepage.description.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if changed:
+        homepage.save()
+        print("  ✓ Fixed Homepage")
+
+# 3. Web Pages
+print("\n3. Checking Web Pages...")
+web_pages = frappe.get_all("Web Page", fields=["name"], limit=200)
+fixed = 0
+for wp in web_pages:
+    try:
+        web_page = frappe.get_doc("Web Page", wp.name)
+        changed = False
+        if web_page.title and "ERPNext" in web_page.title:
+            web_page.title = web_page.title.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if web_page.main_section and "ERPNext" in web_page.main_section:
+            web_page.main_section = web_page.main_section.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if changed:
+            web_page.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} web pages")
+
+# 4. Print Formats
+print("\n4. Checking Print Formats...")
+print_formats = frappe.db.sql("SELECT name FROM `tabPrint Format` WHERE label LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for pf in print_formats:
+    try:
+        print_format = frappe.get_doc("Print Format", pf.name)
+        if print_format.label and "ERPNext" in print_format.label:
+            print_format.label = print_format.label.replace("ERPNext", "Oravco ERP")
+            print_format.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} print formats")
+
+# 5. Custom Fields
+print("\n5. Checking Custom Fields...")
+custom_fields = frappe.db.sql("SELECT name FROM `tabCustom Field` WHERE label LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for cf in custom_fields:
+    try:
+        custom_field = frappe.get_doc("Custom Field", cf.name)
+        if custom_field.label and "ERPNext" in custom_field.label:
+            custom_field.label = custom_field.label.replace("ERPNext", "Oravco ERP")
+            custom_field.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} custom fields")
+
+# 6. Property Setters
+print("\n6. Checking Property Setters...")
+property_setters = frappe.db.sql("SELECT name FROM `tabProperty Setter` WHERE value LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for ps in property_setters:
+    try:
+        prop_setter = frappe.get_doc("Property Setter", ps.name)
+        if prop_setter.value and "ERPNext" in prop_setter.value:
+            prop_setter.value = prop_setter.value.replace("ERPNext", "Oravco ERP")
+            prop_setter.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} property setters")
+
+frappe.db.commit()
+frappe.clear_cache()
+
+print("\n" + "=" * 60)
+print("✅ COMPLETE! All database references updated")
+print("=" * 60)
+print("\nPlease:")
+print("1. Replace the script in Website Settings with the enhanced version above")
+print("2. Clear browser cache and hard refresh")
+exit()
+2025-11-25 05:10:33,733 INFO ipython === session end ===
+2025-11-25 05:12:54,460 INFO ipython === bench console session ===
+2025-11-25 05:12:54,460 INFO ipython # Find and fix remaining ERPNext references
+import frappe
+
+print("=" * 60)
+print("FINDING AND FIXING REMAINING ERPNext REFERENCES")
+print("=" * 60)
+
+# 1. Workspaces
+print("\n1. Checking Workspaces...")
+workspaces = frappe.get_all("Workspace", fields=["name", "label", "title"])
+fixed = 0
+for ws in workspaces:
+    doc = frappe.get_doc("Workspace", ws.name)
+    changed = False
+    if doc.label and "ERPNext" in doc.label:
+        doc.label = doc.label.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if doc.title and "ERPNext" in doc.title:
+        doc.title = doc.title.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if doc.content and "ERPNext" in str(doc.content):
+        doc.content = str(doc.content).replace("ERPNext", "Oravco ERP")
+        changed = True
+    if changed:
+        doc.save()
+        fixed += 1
+        print(f"  ✓ Fixed: {ws.name}")
+print(f"✓ Fixed {fixed} workspaces")
+
+# 2. Homepage
+print("\n2. Checking Homepage...")
+if frappe.db.exists("Homepage", "Homepage"):
+    homepage = frappe.get_doc("Homepage", "Homepage")
+    changed = False
+    if homepage.title and "ERPNext" in homepage.title:
+        homepage.title = homepage.title.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if homepage.tag_line and "ERPNext" in homepage.tag_line:
+        homepage.tag_line = homepage.tag_line.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if homepage.description and "ERPNext" in homepage.description:
+        homepage.description = homepage.description.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if changed:
+        homepage.save()
+        print("  ✓ Fixed Homepage")
+
+# 3. Web Pages
+print("\n3. Checking Web Pages...")
+web_pages = frappe.get_all("Web Page", fields=["name"], limit=200)
+fixed = 0
+for wp in web_pages:
+    try:
+        web_page = frappe.get_doc("Web Page", wp.name)
+        changed = False
+        if web_page.title and "ERPNext" in web_page.title:
+            web_page.title = web_page.title.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if web_page.main_section and "ERPNext" in web_page.main_section:
+            web_page.main_section = web_page.main_section.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if changed:
+            web_page.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} web pages")
+
+# 4. Print Formats
+print("\n4. Checking Print Formats...")
+print_formats = frappe.db.sql("SELECT name FROM `tabPrint Format` WHERE label LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for pf in print_formats:
+    try:
+        print_format = frappe.get_doc("Print Format", pf.name)
+        if print_format.label and "ERPNext" in print_format.label:
+            print_format.label = print_format.label.replace("ERPNext", "Oravco ERP")
+            print_format.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} print formats")
+
+# 5. Custom Fields
+print("\n5. Checking Custom Fields...")
+custom_fields = frappe.db.sql("SELECT name FROM `tabCustom Field` WHERE label LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for cf in custom_fields:
+    try:
+        custom_field = frappe.get_doc("Custom Field", cf.name)
+        if custom_field.label and "ERPNext" in custom_field.label:
+            custom_field.label = custom_field.label.replace("ERPNext", "Oravco ERP")
+            custom_field.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} custom fields")
+
+# 6. Property Setters
+print("\n6. Checking Property Setters...")
+property_setters = frappe.db.sql("SELECT name FROM `tabProperty Setter` WHERE value LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for ps in property_setters:
+    try:
+        prop_setter = frappe.get_doc("Property Setter", ps.name)
+        if prop_setter.value and "ERPNext" in prop_setter.value:
+            prop_setter.value = prop_setter.value.replace("ERPNext", "Oravco ERP")
+            prop_setter.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} property setters")
+
+frappe.db.commit()
+frappe.clear_cache()
+
+print("\n" + "=" * 60)
+print("✅ COMPLETE! All database references updated")
+print("=" * 60)
+print("\nPlease:")
+print("1. Replace the script in Website Settings with the enhanced version above")
+print("2. Clear browser cache and hard refresh")
+exit()
+2025-11-25 05:12:54,460 INFO ipython === session end ===
+2025-11-25 05:17:34,941 INFO ipython === bench console session ===
+2025-11-25 05:17:34,941 INFO ipython # Find and fix remaining ERPNext references
+import frappe
+
+print("=" * 60)
+print("FINDING AND FIXING REMAINING ERPNext REFERENCES")
+print("=" * 60)
+
+# 1. Workspaces
+print("\n1. Checking Workspaces...")
+workspaces = frappe.get_all("Workspace", fields=["name", "label", "title"])
+fixed = 0
+for ws in workspaces:
+    doc = frappe.get_doc("Workspace", ws.name)
+    changed = False
+    if doc.label and "ERPNext" in doc.label:
+        doc.label = doc.label.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if doc.title and "ERPNext" in doc.title:
+        doc.title = doc.title.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if doc.content and "ERPNext" in str(doc.content):
+        doc.content = str(doc.content).replace("ERPNext", "Oravco ERP")
+        changed = True
+    if changed:
+        doc.save()
+        fixed += 1
+        print(f"  ✓ Fixed: {ws.name}")
+print(f"✓ Fixed {fixed} workspaces")
+
+# 2. Homepage
+print("\n2. Checking Homepage...")
+if frappe.db.exists("Homepage", "Homepage"):
+    homepage = frappe.get_doc("Homepage", "Homepage")
+    changed = False
+    if homepage.title and "ERPNext" in homepage.title:
+        homepage.title = homepage.title.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if homepage.tag_line and "ERPNext" in homepage.tag_line:
+        homepage.tag_line = homepage.tag_line.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if homepage.description and "ERPNext" in homepage.description:
+        homepage.description = homepage.description.replace("ERPNext", "Oravco ERP")
+        changed = True
+    if changed:
+        homepage.save()
+        print("  ✓ Fixed Homepage")
+
+# 3. Web Pages
+print("\n3. Checking Web Pages...")
+web_pages = frappe.get_all("Web Page", fields=["name"], limit=200)
+fixed = 0
+for wp in web_pages:
+    try:
+        web_page = frappe.get_doc("Web Page", wp.name)
+        changed = False
+        if web_page.title and "ERPNext" in web_page.title:
+            web_page.title = web_page.title.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if web_page.main_section and "ERPNext" in web_page.main_section:
+            web_page.main_section = web_page.main_section.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if changed:
+            web_page.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} web pages")
+
+# 4. Print Formats
+print("\n4. Checking Print Formats...")
+print_formats = frappe.db.sql("SELECT name FROM `tabPrint Format` WHERE label LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for pf in print_formats:
+    try:
+        print_format = frappe.get_doc("Print Format", pf.name)
+        if print_format.label and "ERPNext" in print_format.label:
+            print_format.label = print_format.label.replace("ERPNext", "Oravco ERP")
+            print_format.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} print formats")
+
+# 5. Custom Fields
+print("\n5. Checking Custom Fields...")
+custom_fields = frappe.db.sql("SELECT name FROM `tabCustom Field` WHERE label LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for cf in custom_fields:
+    try:
+        custom_field = frappe.get_doc("Custom Field", cf.name)
+        if custom_field.label and "ERPNext" in custom_field.label:
+            custom_field.label = custom_field.label.replace("ERPNext", "Oravco ERP")
+            custom_field.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} custom fields")
+
+# 6. Property Setters
+print("\n6. Checking Property Setters...")
+property_setters = frappe.db.sql("SELECT name FROM `tabProperty Setter` WHERE value LIKE '%ERPNext%'", as_dict=True)
+fixed = 0
+for ps in property_setters:
+    try:
+        prop_setter = frappe.get_doc("Property Setter", ps.name)
+        if prop_setter.value and "ERPNext" in prop_setter.value:
+            prop_setter.value = prop_setter.value.replace("ERPNext", "Oravco ERP")
+            prop_setter.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Fixed {fixed} property setters")
+
+frappe.db.commit()
+frappe.clear_cache()
+
+print("\n" + "=" * 60)
+print("✅ COMPLETE! All database references updated")
+print("=" * 60)
+print("\nPlease:")
+print("1. Replace the script in Website Settings with the enhanced version above")
+print("2. Clear browser cache and hard refresh")
+exit()
+2025-11-25 05:17:34,941 INFO ipython # Fixed script - Continue from where it stopped
+import frappe
+
+print("=" * 60)
+print("CONTINUING TO FIX REMAINING ERPNext REFERENCES")
+print("=" * 60)
+
+# 4. Print Formats (Fixed - use get_all instead of SQL)
+print("\n4. Checking Print Formats...")
+print_formats = frappe.get_all("Print Format", fields=["name"], limit=500)
+fixed = 0
+for pf in print_formats:
+    try:
+        print_format = frappe.get_doc("Print Format", pf.name)
+        changed = False
+        # Check standard_name field instead of label
+        if hasattr(print_format, 'standard_name') and print_format.standard_name and "ERPNext" in print_format.standard_name:
+            print_format.standard_name = print_format.standard_name.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if hasattr(print_format, 'print_format_name') and print_format.print_format_name and "ERPNext" in print_format.print_format_name:
+            print_format.print_format_name = print_format.print_format_name.replace("ERPNext", "Oravco ERP")
+            changed = True
+        if changed:
+            print_format.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(print_formats)} print formats, fixed {fixed}")
+
+# 5. Custom Fields (Fixed - use get_all)
+print("\n5. Checking Custom Fields...")
+custom_fields = frappe.get_all("Custom Field", fields=["name", "label"], limit=1000)
+fixed = 0
+for cf in custom_fields:
+    try:
+        if cf.label and "ERPNext" in cf.label:
+            custom_field = frappe.get_doc("Custom Field", cf.name)
+            custom_field.label = custom_field.label.replace("ERPNext", "Oravco ERP")
+            custom_field.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(custom_fields)} custom fields, fixed {fixed}")
+
+# 6. Property Setters (Fixed - use get_all)
+print("\n6. Checking Property Setters...")
+property_setters = frappe.get_all("Property Setter", fields=["name", "value"], limit=1000)
+fixed = 0
+for ps in property_setters:
+    try:
+        if ps.value and "ERPNext" in str(ps.value):
+            prop_setter = frappe.get_doc("Property Setter", ps.name)
+            prop_setter.value = str(prop_setter.value).replace("ERPNext", "Oravco ERP")
+            prop_setter.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(property_setters)} property setters, fixed {fixed}")
+
+# 7. Check DocType Labels
+print("\n7. Checking DocType Labels...")
+doctypes = frappe.get_all("DocType", fields=["name", "label"], limit=1000)
+fixed = 0
+for dt in doctypes:
+    try:
+        if dt.label and "ERPNext" in dt.label:
+            doctype = frappe.get_doc("DocType", dt.name)
+            doctype.label = doctype.label.replace("ERPNext", "Oravco ERP")
+            doctype.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(doctypes)} doctypes, fixed {fixed}")
+
+# 8. Check Reports
+print("\n8. Checking Reports...")
+reports = frappe.get_all("Report", fields=["name", "report_name"], limit=500)
+fixed = 0
+for rpt in reports:
+    try:
+        if rpt.report_name and "ERPNext" in rpt.report_name:
+            report = frappe.get_doc("Report", rpt.name)
+            report.report_name = report.report_name.replace("ERPNext", "Oravco ERP")
+            report.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(reports)} reports, fixed {fixed}")
+
+# 9. Check Dashboards
+print("\n9. Checking Dashboards...")
+dashboards = frappe.get_all("Dashboard", fields=["name", "dashboard_name"], limit=200)
+fixed = 0
+for dash in dashboards:
+    try:
+        if dash.dashboard_name and "ERPNext" in dash.dashboard_name:
+            dashboard = frappe.get_doc("Dashboard", dash.name)
+            dashboard.dashboard_name = dashboard.dashboard_name.replace("ERPNext", "Oravco ERP")
+            dashboard.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(dashboards)} dashboards, fixed {fixed}")
+
+# 10. Check Navbar Settings
+print("\n10. Checking Navbar Settings...")
+if frappe.db.exists("Navbar Settings", "Navbar Settings"):
+    navbar = frappe.get_single("Navbar Settings")
+    changed = False
+    if hasattr(navbar, 'settings_dropdown'):
+        for item in navbar.settings_dropdown:
+            if item.item_label and "ERPNext" in item.item_label:
+                item.item_label = item.item_label.replace("ERPNext", "Oravco ERP")
+                changed = True
+    if changed:
+        navbar.save()
+        print("  ✓ Navbar Settings updated")
+    else:
+        print("  ✓ No ERPNext found in Navbar Settings")
+
+# Commit all changes
+frappe.db.commit()
+frappe.clear_cache()
+
+print("\n" + "=" * 60)
+print("✅ COMPLETE! All remaining database references updated")
+print("=" * 60)
+print("\nNext steps:")
+print("1. Make sure the enhanced JavaScript is in Website Settings → Head HTML")
+print("2. Clear browser cache (Ctrl+Shift+Delete)")
+print("3. Hard refresh (Ctrl+Shift+R)")
+print()
+2025-11-25 05:17:34,941 INFO ipython # Final Fix Script - Skip problematic queries
+import frappe
+
+print("=" * 60)
+print("FINAL FIX - REMAINING ERPNext REFERENCES")
+print("=" * 60)
+
+# 7. Check Reports (skip DocTypes - label is computed, not in DB)
+print("\n7. Checking Reports...")
+reports = frappe.get_all("Report", fields=["name", "report_name"], limit=500)
+fixed = 0
+for rpt in reports:
+    try:
+        if rpt.report_name and "ERPNext" in rpt.report_name:
+            report = frappe.get_doc("Report", rpt.name)
+            report.report_name = report.report_name.replace("ERPNext", "Oravco ERP")
+            report.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(reports)} reports, fixed {fixed}")
+
+# 8. Check Dashboards
+print("\n8. Checking Dashboards...")
+dashboards = frappe.get_all("Dashboard", fields=["name", "dashboard_name"], limit=200)
+fixed = 0
+for dash in dashboards:
+    try:
+        if dash.dashboard_name and "ERPNext" in dash.dashboard_name:
+            dashboard = frappe.get_doc("Dashboard", dash.name)
+            dashboard.dashboard_name = dashboard.dashboard_name.replace("ERPNext", "Oravco ERP")
+            dashboard.save()
+            fixed += 1
+    except:
+        pass
+print(f"✓ Checked {len(dashboards)} dashboards, fixed {fixed}")
+
+# 9. Check Navbar Settings
+print("\n9. Checking Navbar Settings...")
+if frappe.db.exists("Navbar Settings", "Navbar Settings"):
+    navbar = frappe.get_single("Navbar Settings")
+    changed = False
+    if hasattr(navbar, 'settings_dropdown'):
+        for item in navbar.settings_dropdown:
+            if item.item_label and "ERPNext" in item.item_label:
+                item.item_label = item.item_label.replace("ERPNext", "Oravco ERP")
+                changed = True
+    if changed:
+        navbar.save()
+        print("  ✓ Navbar Settings updated")
+    else:
+        print("  ✓ No ERPNext found in Navbar Settings")
+
+# 10. Final System Settings check
+print("\n10. Final System Settings check...")
+system_settings = frappe.get_single("System Settings")
+if system_settings.app_name != "Oravco ERP":
+    system_settings.app_name = "Oravco ERP"
+    system_settings.save()
+    print("  ✓ System Settings app_name updated")
+else:
+    print("  ✓ System Settings already correct")
+
+website_settings = frappe.get_single("Website Settings")
+if website_settings.app_name != "Oravco ERP":
+    website_settings.app_name = "Oravco ERP"
+    website_settings.save()
+    print("  ✓ Website Settings app_name updated")
+else:
+    print("  ✓ Website Settings already correct")
+
+# Commit all changes
+frappe.db.commit()
+frappe.clear_cache()
+
+print("\n" + "=" * 60)
+print("✅ DATABASE FIXES COMPLETE!")
+print("=" * 60)
+print("\nSummary:")
+print("✓ Workspaces: Fixed (ERPNext Settings, ERPNext Integrations)")
+print("✓ System Settings: Updated")
+print("✓ Website Settings: Updated")
+print("\nFor remaining UI references:")
+print("1. Make sure the ENHANCED JavaScript is in Website Settings → Head HTML")
+print("2. The JavaScript will catch ALL remaining references dynamically")
+print("3. Clear browser cache and hard refresh")
+print()
+exit()
+2025-11-25 05:17:34,941 INFO ipython === session end ===
+2025-11-25 06:48:12,680 INFO ipython === bench console session ===
+2025-11-25 06:48:12,697 INFO ipython import frappe
+frappe.clear_cache()
+frappe.cache().clear()
+print("Cache cleared - please test the page now")
+2025-11-25 06:48:12,697 INFO ipython import frappe
+
+# Check and fix home_page
+sys_settings = frappe.get_singles("System Settings")
+print(f"Current home_page: {sys_settings.home_page or '(empty)'}")
+
+if not sys_settings.home_page:
+    sys_settings.home_page = "home"
+    sys_settings.save()
+    print("✓ Set home_page to 'home'")
+elif not frappe.db.exists("Page", sys_settings.home_page):
+    sys_settings.home_page = "home"
+    sys_settings.save()
+    print(f"✓ Fixed invalid home_page")
+
+# Clear cache
+frappe.clear_cache()
+frappe.db.commit()
+print("\n✓ Done! Please test the page now.")
+2025-11-25 06:48:12,697 INFO ipython import frappe
+
+# Check and fix home_page
+sys_settings = frappe.get_single("System Settings")
+print(f"Current home_page: {sys_settings.home_page or '(empty)'}")
+
+if not sys_settings.home_page:
+    sys_settings.home_page = "home"
+    sys_settings.save()
+    print("✓ Set home_page to 'home'")
+elif not frappe.db.exists("Page", sys_settings.home_page):
+    sys_settings.home_page = "home"
+    sys_settings.save()
+    print(f"✓ Fixed invalid home_page")
+
+# Clear cache
+frappe.clear_cache()
+frappe.db.commit()
+print("\n✓ Done! Please test the page now.")
+2025-11-25 06:48:12,698 INFO ipython import frappe
+
+# Check current home_page
+home_page = frappe.db.get_default("desktop:home_page")
+print(f"Current home_page: {home_page or '(not set)'}")
+
+# Check if it exists
+if home_page and not frappe.db.exists("Page", home_page):
+    print(f"⚠️  home_page '{home_page}' does not exist!")
+    home_page = None
+
+if not home_page:
+    # Check if 'home' page exists
+    if frappe.db.exists("Page", "home"):
+        frappe.db.set_default("desktop:home_page", "home")
+        frappe.db.commit()
+        print("✓ Set home_page to 'home'")
+    else:
+        # Default to Workspaces (which always exists)
+        frappe.db.set_default("desktop:home_page", "Workspaces")
+        frappe.db.commit()
+        print("✓ Set home_page to 'Workspaces' (default)")
+else:
+    print(f"✓ home_page '{home_page}' is valid")
+
+# Clear cache
+frappe.clear_cache()
+frappe.db.commit()
+print("\n✓ Done! Please test the page now.")
+2025-11-25 06:48:12,698 INFO ipython === session end ===
+2025-11-25 07:49:37,829 INFO ipython === bench console session ===
+2025-11-25 07:49:37,830 INFO ipython import frappe
+import os
+
+file_path = os.path.join(frappe.get_site_path(), 'public', 'js', 'oravco_branding.js')
+print(f"File path: {file_path}")
+print(f"File exists: {os.path.exists(file_path)}")
+
+if os.path.exists(file_path):
+    print(f"File size: {os.path.getsize(file_path)} bytes")
+else:
+    print("File does not exist! Creating it...")
+    # Create directory if needed
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    # Copy from the existing location
+    import shutil
+    source = os.path.join(frappe.get_site_path(), 'custom_scripts', 'oravco_branding.js')
+    if os.path.exists(source):
+        shutil.copy(source, file_path)
+        print("✓ File copied to public/js/")
+    else:
+        print("Source file not found either!")
+        
+2025-11-25 07:49:37,831 INFO ipython === session end ===
+2025-11-25 07:56:21,904 INFO ipython === bench console session ===
+2025-11-25 07:56:21,905 INFO ipython  import sys, os, frappe
+   print(os.listdir('apps'))   
+2025-11-25 07:56:21,906 INFO ipython === session end ===
+2025-11-25 07:56:56,281 INFO ipython === bench console session ===
+2025-11-25 07:56:56,282 INFO ipython import frappe
+frappe.clear_cache()
+frappe.db.commit()
+exit()
+2025-11-25 07:56:56,282 INFO ipython === session end ===
+2025-11-25 08:14:22,702 INFO ipython === bench console session ===
+2025-11-25 08:14:22,703 INFO ipython import frappe
+
+TARGET = "Oravco ERP"
+PATTERNS = [
+    "ERPNext",
+    "ERP Next",
+    "ERP-Next",
+    "erpnext",
+    "ERP NEXT",
+]
+DOC_TARGETS = [
+    ("System Settings", ["app_name", "title"]),
+    ("Website Settings", ["brand_html", "app_name", "title_prefix", "footer_powered", "website_description"]),
+    ("Navbar Settings", ["settings_json"]),
+    ("Workspace", ["data"]),
+    ("Web Page", ["title", "content"]),
+    ("Website Theme", ["theme_scss"]),
+    ("Portal Settings", ["introduction_text"]),
+    ("Onboarding Step", ["description"]),
+    ("Onboarding", ["description", "success_message"]),
+    ("Workspace Shortcut", ["label"]),
+]
+
+def replace_text(value):
+    if not value:
+        return value
+    new = value
+    for p in PATTERNS:
+        new = new.replace(p, TARGET)
+    return new
+
+updates = 0
+for doctype, fields in DOC_TARGETS:
+    if frappe.db.has_column(doctype, fields[0]):
+        docs = frappe.get_all(doctype, fields=["name"] + fields)
+        for doc in docs:
+            needs_save = False
+            for field in fields:
+                new_val = replace_text(doc.get(field))
+                if new_val != doc.get(field):
+                    frappe.db.set_value(doctype, doc.name, field, new_val, update_modified=False)
+                    needs_save = True
+            if needs_save:
+                updates += 1
+
+# also update translation strings inside JSON fields
+workspace_docs = frappe.get_all("Page", fields=["name", "content"])
+for doc in workspace_docs:
+    new_content = replace_text(doc.content)
+    if new_content != doc.content:
+        frappe.db.set_value("Page", doc.name, "content", new_content, update_modified=False)
+        updates += 1
+
+frappe.db.commit()
+print(f"Updated {updates} records")
+2025-11-25 08:14:22,703 INFO ipython import frappe
+
+TARGET = "Oravco ERP"
+PATTERNS = [
+    "ERPNext",
+    "ERP Next",
+    "ERP-Next",
+    "erpnext",
+    "ERP NEXT",
+]
+
+SINGLE_DOCS = [
+    ("System Settings", ["app_name", "title"]),
+    ("Website Settings", ["brand_html", "app_name", "title_prefix", "footer_powered", "website_description"]),
+    ("Portal Settings", ["introduction_text"]),
+]
+TABLE_DOCS = [
+    ("Navbar Settings", ["settings_json"]),
+    ("Workspace", ["data"]),
+    ("Web Page", ["title", "content"]),
+    ("Website Theme", ["theme_scss"]),
+    ("Onboarding Step", ["description"]),
+    ("Onboarding", ["description", "success_message"]),
+    ("Workspace Shortcut", ["label"]),
+]
+
+def replace_text(value):
+    if not value:
+        return value
+    new_val = value
+    for pattern in PATTERNS:
+        new_val = new_val.replace(pattern, TARGET)
+    return new_val
+
+updates = 0
+
+# Singles
+for doctype, fields in SINGLE_DOCS:
+    doc = frappe.get_single(doctype)
+    changed = False
+    for field in fields:
+        new_val = replace_text(doc.get(field))
+        if new_val != doc.get(field):
+            doc.set(field, new_val)
+            changed = True
+    if changed:
+        doc.save(ignore_permissions=True)
+        updates += 1
+
+# Table doctypes
+for doctype, fields in TABLE_DOCS:
+    docs = frappe.get_all(doctype, fields=["name"] + fields)
+    for row in docs:
+        changed = False
+        for field in fields:
+            new_val = replace_text(row.get(field))
+            if new_val != row.get(field):
+                frappe.db.set_value(doctype, row.name, field, new_val, update_modified=False)
+                changed = True
+        if changed:
+            updates += 1
+
+frappe.db.commit()
+frappe.clear_cache()
+print(f"Updated {updates} records")
+2025-11-25 08:14:22,703 INFO ipython import frappe
+
+TARGET = "Oravco ERP"
+PATTERNS = ["ERPNext", "ERP Next", "ERP-Next", "erpnext", "ERP NEXT"]
+
+SINGLE_DOCS = [
+    ("System Settings", ["app_name", "title"]),
+    ("Website Settings", ["brand_html", "app_name", "title_prefix", "footer_powered", "website_description"]),
+    ("Portal Settings", ["introduction_text"]),
+]
+TABLE_DOCS = [
+    ("Navbar Settings", ["settings_json"]),
+    ("Workspace", ["data"]),
+    ("Web Page", ["title", "content"]),
+    ("Website Theme", ["theme_scss"]),
+    ("Onboarding Step", ["description"]),
+    ("Onboarding", ["description", "success_message"]),
+    ("Workspace Shortcut", ["label"]),
+]
+
+def replace_text(value):
+    if not value:
+        return value
+    new_val = value
+    for pattern in PATTERNS:
+        new_val = new_val.replace(pattern, TARGET)
+    return new_val
+
+updates = 0
+
+for doctype, fields in SINGLE_DOCS:
+    doc = frappe.get_single(doctype)
+    changed = False
+    for field in fields:
+        new_val = replace_text(doc.get(field))
+        if new_val != doc.get(field):
+            doc.set(field, new_val)
+            changed = True
+    if changed:
+        doc.save(ignore_permissions=True)
+        updates += 1
+
+for doctype, fields in TABLE_DOCS:
+    docs = frappe.get_all(doctype, fields=["name"] + fields)
+    for row in docs:
+        changed = False
+        for field in fields:
+            new_val = replace_text(row.get(field))
+            if new_val != row.get(field):
+                frappe.db.set_value(doctype, row.name, field, new_val, update_modified=False)
+                changed = True
+        if changed:
+            updates += 1
+
+frappe.db.commit()
+frappe.clear_cache()
+print(f"Updated {updates} records")
+2025-11-25 08:14:22,703 INFO ipython === session end ===
+2025-11-25 08:15:06,242 INFO ipython === bench console session ===
+2025-11-25 08:15:06,243 INFO ipython import frappe
+
+TARGET = "Oravco ERP"
+PATTERNS = ["ERPNext", "ERP Next", "ERP-Next", "erpnext", "ERP NEXT"]
+
+SINGLE_DOCS = [
+    ("System Settings", ["app_name", "title"]),
+    ("Website Settings", ["brand_html", "app_name", "title_prefix", "footer_powered", "website_description"]),
+    ("Portal Settings", ["introduction_text"]),
+]
+TABLE_DOCS = [
+    ("Navbar Settings", ["settings_json"]),
+    ("Workspace", ["data"]),
+    ("Web Page", ["title", "content"]),
+    ("Website Theme", ["theme_scss"]),
+    ("Onboarding Step", ["description"]),
+    ("Onboarding", ["description", "success_message"]),
+    ("Workspace Shortcut", ["label"]),
+]
+
+def replace_text(value):
+    if not value:
+        return value
+    new_val = value
+    for pattern in PATTERNS:
+        new_val = new_val.replace(pattern, TARGET)
+    return new_val
+
+updates = 0
+
+for doctype, fields in SINGLE_DOCS:
+    doc = frappe.get_single(doctype)
+    changed = False
+    for field in fields:
+        new_val = replace_text(doc.get(field))
+        if new_val != doc.get(field):
+            doc.set(field, new_val)
+            changed = True
+    if changed:
+        doc.save(ignore_permissions=True)
+        updates += 1
+
+for doctype, fields in TABLE_DOCS:
+    docs = frappe.get_all(doctype, fields=["name"] + fields)
+    for row in docs:
+        changed = False
+        for field in fields:
+            new_val = replace_text(row.get(field))
+            if new_val != row.get(field):
+                frappe.db.set_value(doctype, row.name, field, new_val, update_modified=False)
+                changed = True
+        if changed:
+            updates += 1
+
+frappe.db.commit()
+frappe.clear_cache()
+print(f"Updated {updates} records")
+2025-11-25 08:15:06,250 INFO ipython === session end ===
+2025-11-25 08:16:06,725 INFO ipython === bench console session ===
+2025-11-25 08:16:06,725 INFO ipython import frappe
+
+TARGET = "Oravco ERP"
+PATTERNS = ["ERPNext", "ERP Next", "ERP-Next", "erpnext", "ERP NEXT"]
+
+SINGLE_DOCS = [
+    ("System Settings", ["app_name", "title"]),
+    ("Website Settings", ["brand_html", "app_name", "title_prefix", "footer_powered", "website_description"]),
+    ("Portal Settings", ["introduction_text"]),
+]
+TABLE_DOCS = [
+    ("Navbar Settings", ["settings_json"]),
+    ("Workspace", ["data"]),
+    ("Web Page", ["title", "content"]),
+    ("Website Theme", ["theme_scss"]),
+    ("Onboarding Step", ["description"]),
+    ("Onboarding", ["description", "success_message"]),
+    ("Workspace Shortcut", ["label"]),
+]
+
+def replace_text(value):
+    if not value:
+        return value
+    new_val = value
+    for pattern in PATTERNS:
+        new_val = new_val.replace(pattern, TARGET)
+    return new_val
+
+updates = 0
+
+for doctype, fields in SINGLE_DOCS:
+    doc = frappe.get_single(doctype)
+    changed = False
+    for field in fields:
+        new_val = replace_text(doc.get(field))
+        if new_val != doc.get(field):
+            doc.set(field, new_val)
+            changed = True
+    if changed:
+        doc.save(ignore_permissions=True)
+        updates += 1
+
+for doctype, fields in TABLE_DOCS:
+    docs = frappe.get_all(doctype, fields=["name"] + fields)
+    for row in docs:
+        changed = False
+        for field in fields:
+            new_val = replace_text(row.get(field))
+            if new_val != row.get(field):
+                frappe.db.set_value(doctype, row.name, field, new_val, update_modified=False)
+                changed = True
+        if changed:
+            updates += 1
+
+frappe.db.commit()
+frappe.clear_cache()
+print(f"Updated {updates} records")
+2025-11-25 08:16:06,733 INFO ipython === session end ===
+2025-11-25 08:17:42,257 INFO ipython === bench console session ===
+2025-11-25 08:17:42,257 INFO ipython === session end ===
+2025-11-25 08:21:08,263 INFO ipython === bench console session ===
+2025-11-25 08:21:08,263 INFO ipython import frappe
+
+TARGET = "Oravco ERP"
+PATTERNS = ["ERPNext", "ERP Next", "ERP-Next", "erpnext", "ERP NEXT"]
+
+SINGLE_DOCS = [
+    ("System Settings", ["app_name", "title"]),
+    ("Website Settings", ["brand_html", "app_name", "title_prefix", "footer_powered", "website_description"]),
+    ("Portal Settings", ["introduction_text"]),
+]
+TABLE_DOCS = [
+    ("Navbar Settings", ["settings_json"]),
+    ("Workspace", ["data"]),
+    ("Web Page", ["title", "content"]),
+    ("Website Theme", ["theme_scss"]),
+    ("Onboarding Step", ["description"]),
+    ("Onboarding", ["description", "success_message"]),
+    ("Workspace Shortcut", ["label"]),
+]
+
+def replace_text(value):
+    if not value:
+        return value
+    new_val = value
+    for pattern in PATTERNS:
+        new_val = new_val.replace(pattern, TARGET)
+    return new_val
+
+updates = 0
+
+for doctype, fields in SINGLE_DOCS:
+    doc = frappe.get_single(doctype)
+    changed = False
+    for field in fields:
+        new_val = replace_text(doc.get(field))
+        if new_val != doc.get(field):
+            doc.set(field, new_val)
+            changed = True
+    if changed:
+        doc.save(ignore_permissions=True)
+        updates += 1
+
+for doctype, fields in TABLE_DOCS:
+    docs = frappe.get_all(doctype, fields=["name"] + fields)
+    for row in docs:
+        changed = False
+        for field in fields:
+            new_val = replace_text(row.get(field))
+            if new_val != row.get(field):
+                frappe.db.set_value(doctype, row.name, field, new_val, update_modified=False)
+                changed = True
+        if changed:
+            updates += 1
+
+frappe.db.commit()
+frappe.clear_cache()
+print(f"Updted {updates} records")
+2025-11-25 08:21:08,263 INFO ipython === session end ===
+2025-11-25 13:39:12,431 INFO ipython === bench console session ===
+2025-11-25 13:39:12,432 INFO ipython frappe.conf.developer_mode = 1
+frappe.db.set_value("System Settings", "System Settings", "enable_scheduler", 1)
+frappe.db.commit()
+frappe.clear_cache()
+2025-11-25 13:39:12,432 INFO ipython === session end ===
+2025-11-25 14:08:44,422 INFO ipython === bench console session ===
+2025-11-25 14:08:44,424 INFO ipython from oravco_erp.utils.update_ui_branding import update_ui_branding
+update_ui_branding()
+2025-11-25 14:08:44,424 INFO ipython === session end ===
+2025-11-25 14:16:14,558 INFO ipython === bench console session ===
+2025-11-25 14:16:14,558 INFO ipython from oravco_erp.utils.update_ui_branding import update_ui_branding
+update_ui_branding()
+2025-11-25 14:16:14,558 INFO ipython === session end ===
+2025-11-25 14:30:51,018 INFO ipython === bench console session ===
+2025-11-25 14:30:51,018 INFO ipython from oravco_erp.utils.setup_logo import setup_logo
+setup_logo()
+2025-11-25 14:30:51,019 INFO ipython === session end ===
+2025-11-25 14:40:04,039 INFO ipython === bench console session ===
+2025-11-25 14:40:04,039 INFO ipython from oravco_erp.utils.setup_logo import setup_logo
+setup_logo()
+2025-11-25 14:40:04,039 INFO ipython === session end ===
+2025-11-25 14:49:32,336 INFO ipython === bench console session ===
+2025-11-25 14:49:32,336 INFO ipython from oravco_erp.utils.setup_logo_text import setup_logo_text
+setup_logo_text()
+2025-11-25 14:49:32,336 INFO ipython === session end ===
+2025-11-26 04:57:11,865 INFO ipython === bench console session ===
+2025-11-26 04:57:11,879 INFO ipython from oravco_erp.utils.fix_logo_and_login import fix_logo_and_login
+fix_logo_and_login()
+2025-11-26 04:57:11,879 INFO ipython from oravco_erp.utils.update_login_and_footer import update_login_and_footer
+update_login_and_footer()
+2025-11-26 04:57:11,879 INFO ipython === session end ===
+2025-11-26 05:09:44,100 INFO ipython === bench console session ===
+2025-11-26 05:09:44,115 INFO ipython from oravco_erp.utils.fix_logo_and_login import fix_logo_and_login
+fix_logo_and_login()
+2025-11-26 05:09:44,115 INFO ipython === session end ===
+2025-11-26 05:16:25,903 INFO ipython === bench console session ===
+2025-11-26 05:16:25,904 INFO ipython from oravco_erp.utils.set_logo_to_text import set_logo_to_text
+set_logo_to_text()
+2025-11-26 05:16:25,904 INFO ipython from oravco_erp.utils.update_login_and_footer import update_login_and_footer
+update_login_and_footer()
+2025-11-26 05:16:25,904 INFO ipython === session end ===
+2025-11-26 08:06:13,978 INFO ipython === bench console session ===
+2025-11-26 08:06:13,979 INFO ipython import frappe
+2025-11-26 08:06:13,979 INFO ipython frappe.init('erporavco.localhost')
+2025-11-26 08:06:13,979 INFO ipython frappe.connect()
+2025-11-26 08:06:13,979 INFO ipython ws = frappe.get_doc('Website Settings')
+2025-11-26 08:06:13,979 INFO ipython print(f'Footer powered: {ws.footer_powered}')
+2025-11-26 08:06:13,979 INFO ipython === session end ===
+2025-11-26 08:26:55,696 INFO ipython === bench console session ===
+2025-11-26 08:26:55,696 INFO ipython import frappe
+2025-11-26 08:26:55,697 INFO ipython # Unhide Website Workspace
+2025-11-26 08:26:55,697 INFO ipython frappe.db.set_value("Workspace", "Website", "is_hidden", 0)
+2025-11-26 08:26:55,698 INFO ipython frappe.db.set_value("Workspace", "Website", "public", 1)
+2025-11-26 08:26:55,698 INFO ipython # Unblock Desktop Icons
+2025-11-26 08:26:55,698 INFO ipython from frappe.desk.doctype.desktop_icon.desktop_icon import set_hidden
+2025-11-26 08:26:55,698 INFO ipython set_hidden("Website", user=None, hidden=0)
+2025-11-26 08:26:55,698 INFO ipython # Unblock for all users
+2025-11-26 08:26:55,698 INFO ipython users = frappe.get_all("User", filters={"enabled": 1}, pluck="name")
+2025-11-26 08:26:55,698 INFO ipython for user_name in users:
+    user_doc = frappe.get_doc("User", user_name)
+    user_doc.block_modules = [d for d in user_doc.block_modules if d.module != "Website"]
+    user_doc.save(ignore_permissions=True)
+
+2025-11-26 08:26:55,698 INFO ipython frappe.db.commit()
+2025-11-26 08:26:55,698 INFO ipython frappe.clear_cache()
+2025-11-26 08:26:55,698 INFO ipython from frappe.desk.doctype.desktop_icon.desktop_icon import clear_desktop_icons_cache
+2025-11-26 08:26:55,699 INFO ipython clear_desktop_icons_cache()
+2025-11-26 08:26:55,699 INFO ipython print("✅ Website module has been unhidden!")
+2025-11-26 08:26:55,699 INFO ipython === session end ===

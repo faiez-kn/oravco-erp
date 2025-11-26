@@ -1,0 +1,50 @@
+================================================================================
+LOGO SETUP INSTRUCTIONS - ORAVCO ERP
+================================================================================
+
+STEP 1: PLACE YOUR LOGO IMAGE
+-------------------------------
+1. Copy your golden "O" logo image
+2. Save it as: apps/oravco_erp/oravco_erp/public/images/oravco-logo.png
+3. Recommended: PNG format, 150px width, transparent background
+
+STEP 2: RUN SETUP SCRIPT
+--------------------------
+Run this command:
+
+cd ~/oravco-erp/frappe_docker
+docker compose exec backend bash -lc "cd /home/frappe/frappe-bench && bench --site erporavco.localhost console"
+
+Then paste this in the console:
+
+from oravco_erp.utils.setup_logo import setup_logo
+setup_logo()
+
+STEP 3: CLEAR CACHE
+--------------------
+docker compose exec backend bash -lc "cd /home/frappe/frappe-bench && bench --site erporavco.localhost clear-cache"
+
+STEP 4: RESTART BACKEND
+------------------------
+docker compose restart backend
+
+STEP 5: REFRESH BROWSER
+------------------------
+Press Ctrl+F5 (or Cmd+Shift+R on Mac) to hard refresh
+
+================================================================================
+WHAT WAS CONFIGURED:
+================================================================================
+✅ Logo directory created: apps/oravco_erp/oravco_erp/public/images/
+✅ Hooks updated: app_logo_url configured
+✅ Setup script created: utils/setup_logo.py
+✅ Auto-setup: Logo will be set automatically on app install
+
+================================================================================
+FILE LOCATION:
+================================================================================
+Your logo should be placed at:
+apps/oravco_erp/oravco_erp/public/images/oravco-logo.png
+
+================================================================================
+

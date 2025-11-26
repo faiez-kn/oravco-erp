@@ -1705,3 +1705,181 @@ update_login_and_footer()
 2025-11-26 08:26:55,699 INFO ipython clear_desktop_icons_cache()
 2025-11-26 08:26:55,699 INFO ipython print("✅ Website module has been unhidden!")
 2025-11-26 08:26:55,699 INFO ipython === session end ===
+2025-11-26 13:23:30,547 INFO ipython === bench console session ===
+2025-11-26 13:23:30,549 INFO ipython #!/usr/bin/env python3
+2025-11-26 13:23:30,549 INFO ipython """
+Fix permissions for Item creation and Stock Settings editing
+Run this with: bench --site erporavco.localhost console
+Then copy-paste the code below
+"""
+2025-11-26 13:23:30,549 INFO ipython import frappe
+2025-11-26 13:23:30,549 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,549 INFO ipython print("VERSION INFORMATION")
+2025-11-26 13:23:30,549 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,549 INFO ipython print(f"Frappe Version: {frappe.__version__}")
+2025-11-26 13:23:30,549 INFO ipython try:
+    import erpnext
+    print(f"ERPNext Version: {erpnext.__version__}")
+except:
+    pass
+
+2025-11-26 13:23:30,549 INFO ipython print("\nNote: You are using ERPNext v15.88.1 - this is a recent version")
+2025-11-26 13:23:30,549 INFO ipython print("UI inconsistencies may be due to browser cache or missing roles")
+2025-11-26 13:23:30,549 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:23:30,549 INFO ipython print("CHECKING CURRENT USER")
+2025-11-26 13:23:30,549 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,549 INFO ipython user = frappe.session.user
+2025-11-26 13:23:30,549 INFO ipython print(f"Current User: {user}")
+2025-11-26 13:23:30,549 INFO ipython roles = frappe.get_roles(user)
+2025-11-26 13:23:30,549 INFO ipython print(f"User Roles: {', '.join(roles)}")
+2025-11-26 13:23:30,549 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:23:30,549 INFO ipython print("FIXING ITEM PERMISSIONS")
+2025-11-26 13:23:30,550 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,550 INFO ipython # Get Item doctype
+2025-11-26 13:23:30,550 INFO ipython item_doc = frappe.get_doc("DocType", "Item")
+2025-11-26 13:23:30,550 INFO ipython # Check if System Manager has create permission
+2025-11-26 13:23:30,550 INFO ipython has_system_manager_create = False
+2025-11-26 13:23:30,550 INFO ipython for perm in item_doc.permissions:
+    if perm.role == "System Manager" and perm.create:
+        has_system_manager_create = True
+        break
+
+2025-11-26 13:23:30,550 INFO ipython if not has_system_manager_create:
+    print("Adding create permission for System Manager role...")
+    item_doc.append("permissions", {
+        "role": "System Manager",
+        "create": 1,
+        "read": 1,
+        "write": 1,
+        "delete": 1,
+        "export": 1,
+        "print": 1,
+        "email": 1,
+        "report": 1,
+        "share": 1
+    })
+    item_doc.save(ignore_permissions=True)
+    print("✓ Added System Manager permissions for Item")
+else:
+    print("✓ System Manager already has create permission for Item")
+
+2025-11-26 13:23:30,550 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:23:30,550 INFO ipython print("FIXING STOCK SETTINGS PERMISSIONS")
+2025-11-26 13:23:30,550 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,550 INFO ipython # Get Stock Settings doctype
+2025-11-26 13:23:30,550 INFO ipython stock_settings_doc = frappe.get_doc("DocType", "Stock Settings")
+2025-11-26 13:23:30,550 INFO ipython # Check if System Manager has write permission
+2025-11-26 13:23:30,550 INFO ipython has_system_manager_write = False
+2025-11-26 13:23:30,550 INFO ipython for perm in stock_settings_doc.permissions:
+    if perm.role == "System Manager" and perm.write:
+        has_system_manager_write = True
+        break
+
+2025-11-26 13:23:30,550 INFO ipython if not has_system_manager_write:
+    print("Adding write permission for System Manager role...")
+    stock_settings_doc.append("permissions", {
+        "role": "System Manager",
+        "create": 1,
+        "read": 1,
+        "write": 1,
+        "delete": 1,
+        "export": 1,
+        "print": 1,
+        "email": 1,
+        "report": 1,
+        "share": 1
+    })
+    stock_settings_doc.save(ignore_permissions=True)
+    print("✓ Added System Manager permissions for Stock Settings")
+else:
+    print("✓ System Manager already has write permission for Stock Settings")
+
+2025-11-26 13:23:30,550 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:23:30,550 INFO ipython print("CHECKING PERMISSIONS")
+2025-11-26 13:23:30,550 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,550 INFO ipython # Check Item permissions
+2025-11-26 13:23:30,550 INFO ipython item_perms = frappe.permissions.get_doc_permissions("Item")
+2025-11-26 13:23:30,551 INFO ipython print(f"Item - Can Create: {item_perms.get('create', False)}")
+2025-11-26 13:23:30,551 INFO ipython print(f"Item - Can Write: {item_perms.get('write', False)}")
+2025-11-26 13:23:30,551 INFO ipython # Check Stock Settings permissions
+2025-11-26 13:23:30,551 INFO ipython stock_perms = frappe.permissions.get_doc_permissions("Stock Settings")
+2025-11-26 13:23:30,551 INFO ipython print(f"Stock Settings - Can Read: {stock_perms.get('read', False)}")
+2025-11-26 13:23:30,551 INFO ipython print(f"Stock Settings - Can Write: {stock_perms.get('write', False)}")
+2025-11-26 13:23:30,551 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:23:30,551 INFO ipython print("CLEARING CACHES")
+2025-11-26 13:23:30,551 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,551 INFO ipython frappe.clear_cache()
+2025-11-26 13:23:30,551 INFO ipython frappe.clear_website_cache()
+2025-11-26 13:23:30,551 INFO ipython frappe.clear_doctype_cache("Item")
+2025-11-26 13:23:30,551 INFO ipython frappe.clear_doctype_cache("Stock Settings")
+2025-11-26 13:23:30,551 INFO ipython print("✓ All caches cleared")
+2025-11-26 13:23:30,551 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:23:30,551 INFO ipython print("COMPLETED")
+2025-11-26 13:23:30,551 INFO ipython print("=" * 60)
+2025-11-26 13:23:30,551 INFO ipython print("\nNext steps:")
+2025-11-26 13:23:30,551 INFO ipython print("1. Refresh your browser (Ctrl+F5 for hard refresh)")
+2025-11-26 13:23:30,551 INFO ipython print("2. Check if 'New' button appears in Item list")
+2025-11-26 13:23:30,551 INFO ipython print("3. Try editing Stock Settings")
+2025-11-26 13:23:30,551 INFO ipython print("4. If UI still looks inconsistent, clear browser cache")
+2025-11-26 13:23:30,551 INFO ipython === session end ===
+2025-11-26 13:57:31,429 INFO ipython === bench console session ===
+2025-11-26 13:57:31,430 INFO ipython import frappe
+2025-11-26 13:57:31,431 INFO ipython print("=" * 60)
+2025-11-26 13:57:31,431 INFO ipython print("FIXING STOCK SETTINGS ACCESS")
+2025-11-26 13:57:31,431 INFO ipython print("=" * 60)
+2025-11-26 13:57:31,431 INFO ipython user = frappe.session.user
+2025-11-26 13:57:31,431 INFO ipython print(f"Current User: {user}")
+2025-11-26 13:57:31,431 INFO ipython roles = frappe.get_roles(user)
+2025-11-26 13:57:31,431 INFO ipython print(f"Has System Manager: {'System Manager' in roles}")
+2025-11-26 13:57:31,431 INFO ipython print(f"Has Stock Manager: {'Stock Manager' in roles}")
+2025-11-26 13:57:31,431 INFO ipython print("\nUpdating Stock Settings doctype...")
+2025-11-26 13:57:31,431 INFO ipython stock_doc = frappe.get_doc("DocType", "Stock Settings")
+2025-11-26 13:57:31,431 INFO ipython system_manager_perm = None
+2025-11-26 13:57:31,431 INFO ipython for perm in stock_doc.permissions:
+    if perm.role == "System Manager":
+        system_manager_perm = perm
+        break
+
+2025-11-26 13:57:31,431 INFO ipython if system_manager_perm:
+    print("System Manager permission exists, ensuring write access...")
+    system_manager_perm.write = 1
+    system_manager_perm.create = 1
+    system_manager_perm.delete = 1
+else:
+    print("Adding System Manager permission...")
+    stock_doc.append("permissions", {
+        "role": "System Manager",
+        "create": 1,
+        "read": 1,
+        "write": 1,
+        "delete": 1,
+        "export": 1,
+        "print": 1,
+        "email": 1,
+        "report": 1,
+        "share": 1
+    })
+
+2025-11-26 13:57:31,432 INFO ipython stock_doc.save(ignore_permissions=True)
+2025-11-26 13:57:31,432 INFO ipython print("✓ Saved Stock Settings doctype")
+2025-11-26 13:57:31,432 INFO ipython print("\nReloading doctype...")
+2025-11-26 13:57:31,432 INFO ipython frappe.reload_doc("Stock", "doctype", "Stock Settings")
+2025-11-26 13:57:31,432 INFO ipython print("✓ Reloaded")
+2025-11-26 13:57:31,432 INFO ipython print("\nClearing caches...")
+2025-11-26 13:57:31,432 INFO ipython frappe.clear_cache()
+2025-11-26 13:57:31,432 INFO ipython frappe.clear_website_cache()
+2025-11-26 13:57:31,432 INFO ipython print("✓ Cleared")
+2025-11-26 13:57:31,432 INFO ipython print("\n" + "=" * 60)
+2025-11-26 13:57:31,432 INFO ipython print("VERIFYING PERMISSIONS")
+2025-11-26 13:57:31,432 INFO ipython print("=" * 60)
+2025-11-26 13:57:31,432 INFO ipython can_write = frappe.has_permission("Stock Settings", "write")
+2025-11-26 13:57:31,432 INFO ipython print(f"Can write Stock Settings: {can_write}")
+2025-11-26 13:57:31,432 INFO ipython if can_write:
+    print("\n✓ SUCCESS! You should now be able to edit Stock Settings.")
+else:
+    print("\n⚠ WARNING: Still cannot write. Check your user roles.")
+
+2025-11-26 13:57:31,432 INFO ipython print("\nNext steps:")
+2025-11-26 13:57:31,432 INFO ipython print("1. Hard refresh your browser (Ctrl+F5)")
+2025-11-26 13:57:31,432 INFO ipython print("2. Try accessing Stock Settings again")
+2025-11-26 13:57:31,432 INFO ipython === session end ===

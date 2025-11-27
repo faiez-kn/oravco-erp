@@ -24,7 +24,7 @@ add_to_apps_screen = [
 ]
 
 # Include JavaScript for client-side branding
-app_include_js = ["oravco_erp.bundle.js"]
+app_include_js = ["oravco_erp.bundle.js", "socketio_fix.js"]
 web_include_js = ["oravco_erp.bundle.js", "footer_branding.js"]
 
 # Client scripts for forms

@@ -3,7 +3,7 @@ import frappe
 # Configuration: List of modules to hide by default
 # Add or remove module names from this list to hide/show modules
 MODULES_TO_HIDE = [
-	# "Website",  # Website module is now visible - removed from hidden list
+	"Website",  # Hide Website module from sidebar
 	# Add more modules here as needed, for example:
 	# "Blog",
 	# "Newsletter",

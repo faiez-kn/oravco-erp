@@ -1883,3 +1883,8 @@ else:
 2025-11-26 13:57:31,432 INFO ipython print("1. Hard refresh your browser (Ctrl+F5)")
 2025-11-26 13:57:31,432 INFO ipython print("2. Try accessing Stock Settings again")
 2025-11-26 13:57:31,432 INFO ipython === session end ===
+2025-12-03 03:56:51,679 INFO ipython === bench console session ===
+2025-12-03 03:56:51,683 INFO ipython import frappe; frappe.init(); frappe.connect(); print('Developer Mode:', frappe.conf.developer_mode)
+2025-12-03 03:56:51,684 INFO ipython === session end ===
+2025-12-04 03:54:06,960 INFO ipython === bench console session ===
+2025-12-04 03:54:06,962 INFO ipython === session end ===

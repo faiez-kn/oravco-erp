@@ -47,12 +47,30 @@ def after_install():
 	"""Update branding after app installation"""
 	ensure_branding()
 	
+	# Override get_apps() to only show Oravco ERP
+	try:
+		from oravco_erp.utils.apps import override_get_apps
+		override_get_apps()
+	except Exception as e:
+		frappe.log_error(f"Error overriding get_apps: {str(e)}")
+	
 	# Hide configured modules (runs only on install/migrate)
 	try:
 		from oravco_erp.utils.hide_modules import hide_modules
 		hide_modules()
 	except Exception:
 		pass
+	
+	frappe.db.commit()
+	frappe.clear_cache()
+
+def after_migrate():
+	"""Ensure modules are hidden after migrations"""
+	try:
+		from oravco_erp.utils.hide_modules import hide_modules
+		hide_modules()
+	except Exception as e:
+		frappe.log_error(f"Error hiding modules after migrate: {str(e)}")
 	
 	frappe.db.commit()
 	frappe.clear_cache()

@@ -1,0 +1,631 @@
+/* Oravco ERP Custom CSS Fixes */
+
+/* Fix navbar logo sizing */
+.navbar-brand img,
+.app-logo img {
+    max-height: 32px !important;
+    height: auto !important;
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+/* Fix logo in login page */
+.login-logo img {
+    max-height: 60px !important;
+    height: auto !important;
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+/* Ensure proper spacing in navbar */
+.navbar {
+    padding: 0.5rem 1rem !important;
+}
+
+.navbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    height: 48px !important;
+}
+
+/* Fix footer styling */
+.footer-powered {
+    text-align: center !important;
+    padding: 1rem 0 !important;
+}
+
+.footer-powered a {
+    color: #6c757d !important;
+    text-decoration: none !important;
+}
+
+.footer-powered a:hover {
+    color: #e74c3c !important;
+    text-decoration: underline !important;
+}
+
+/* Fix button styling consistency */
+.btn-primary {
+    background-color: #e74c3c !important;
+    border-color: #e74c3c !important;
+}
+
+.btn-primary:hover {
+    background-color: #c0392b !important;
+    border-color: #c0392b !important;
+}
+
+/* Fix card styling */
+.card {
+    border-radius: 0.375rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix form control styling */
+.form-control:focus {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25) !important;
+}
+
+/* Fix link colors */
+a {
+    color: #e74c3c !important;
+}
+
+a:hover {
+    color: #c0392b !important;
+}
+
+/* Fix sidebar styling */
+.sidebar-item.active {
+    background-color: rgba(231, 76, 60, 0.1) !important;
+    border-left: 3px solid #e74c3c !important;
+}
+
+/* Fix workspace card styling */
+.workspace-card {
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.workspace-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix loading spinner color */
+.spinner-border-primary {
+    border-color: #e74c3c !important;
+}
+
+/* Fix badge styling */
+.badge-primary {
+    background-color: #e74c3c !important;
+    color: white !important;
+}
+
+/* Fix table header styling */
+.table thead th {
+    background-color: #f8f9fa !important;
+    border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* Fix modal header */
+.modal-header {
+    background-color: #e74c3c !important;
+    color: white !important;
+}
+
+.modal-header .close {
+    color: white !important;
+    opacity: 0.9 !important;
+}
+
+.modal-header .close:hover {
+    opacity: 1 !important;
+}
+
+/* Fix alert styling */
+.alert-primary {
+    background-color: rgba(231, 76, 60, 0.1) !important;
+    border-color: #e74c3c !important;
+    color: #c0392b !important;
+}
+
+/* Fix dropdown menu */
+.dropdown-menu {
+    border-radius: 0.375rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(231, 76, 60, 0.1) !important;
+}
+
+/* Fix breadcrumb styling */
+.breadcrumb-item.active {
+    color: #e74c3c !important;
+}
+
+/* Fix pagination */
+.page-item.active .page-link {
+    background-color: #e74c3c !important;
+    border-color: #e74c3c !important;
+}
+
+.page-link {
+    color: #e74c3c !important;
+}
+
+.page-link:hover {
+    color: #c0392b !important;
+}
+
+/* Fix tooltip styling */
+.tooltip-inner {
+    background-color: #e74c3c !important;
+}
+
+.tooltip.bs-tooltip-top .arrow::before {
+    border-top-color: #e74c3c !important;
+}
+
+.tooltip.bs-tooltip-bottom .arrow::before {
+    border-bottom-color: #e74c3c !important;
+}
+
+.tooltip.bs-tooltip-left .arrow::before {
+    border-left-color: #e74c3c !important;
+}
+
+.tooltip.bs-tooltip-right .arrow::before {
+    border-right-color: #e74c3c !important;
+}
+
+/* Fix progress bar */
+.progress-bar {
+    background-color: #e74c3c !important;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        max-height: 24px !important;
+    }
+    
+    .login-logo img {
+        max-height: 40px !important;
+    }
+}
+
+/* Fix print styles */
+@media print {
+    .navbar,
+    .sidebar,
+    .footer {
+        display: none !important;
+    }
+}
+
+/* Fix dark mode compatibility */
+[data-theme="dark"] .card {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .form-control {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568 !important;
+}
+
+/* Fix scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e74c3c;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c0392b;
+}
+
+/* Fix font loading - graceful fallbacks */
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('/assets/frappe/css/fonts/fontawesome/fontawesome-webfont.woff2') format('woff2'),
+         url('/assets/frappe/css/fonts/fontawesome/fontawesome-webfont.woff') format('woff'),
+         url('/assets/frappe/css/fonts/fontawesome/fontawesome-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Suppress font loading errors gracefully */
+.fontawesome-webfont,
+.fa {
+    font-family: 'FontAwesome', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Fix modal aria-hidden issue */
+.modal[aria-hidden="true"] .btn:focus,
+.modal[aria-hidden="true"] input:focus,
+.modal[aria-hidden="true"] select:focus,
+.modal[aria-hidden="true"] textarea:focus {
+    outline: 2px solid #e74c3c !important;
+    outline-offset: 2px !important;
+}
+
+/* ============================================
+   ICON FIXES - Match Frappe/ERPNext Standards
+   ============================================ */
+
+/* Fix icon display in dropdown menus */
+.menu-item-icon,
+.dropdown-item-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: var(--margin-sm, 8px) !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle !important;
+}
+
+.menu-item-icon svg,
+.dropdown-item-icon svg,
+.menu-item-icon .icon,
+.dropdown-item-icon .icon {
+    width: 16px !important;
+    height: 16px !important;
+    display: inline-block !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* Fix FontAwesome icons in dropdowns */
+.menu-item-icon .fa,
+.dropdown-item-icon .fa,
+.dropdown-item .fa,
+.menu-item-icon i.fa,
+.dropdown-item-icon i.fa {
+    font-family: 'FontAwesome' !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    width: auto !important;
+    height: auto !important;
+    color: inherit !important;
+}
+
+/* Fix dropdown item icon alignment */
+.dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    padding: var(--dropdown-item-padding-y, 0.5rem) var(--dropdown-item-padding-x, 0.75rem) !important;
+}
+
+.dropdown-item .menu-item-icon,
+.dropdown-item .dropdown-item-icon {
+    flex-shrink: 0 !important;
+    margin-right: var(--margin-sm, 8px) !important;
+}
+
+.dropdown-item .menu-item-label {
+    flex: 1 !important;
+    margin-right: var(--margin-md, 12px) !important;
+}
+
+/* Fix icon buttons */
+.icon-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+.icon-btn .icon,
+.icon-btn svg,
+.icon-btn .fa {
+    margin: 0 !important;
+}
+
+/* Fix general icon display */
+.icon {
+    display: inline-block !important;
+    font-size: 0 !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 auto !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: 50% 50% !important;
+    fill: var(--icon-fill, currentColor) !important;
+    stroke: var(--icon-stroke, currentColor) !important;
+    vertical-align: middle !important;
+}
+
+.icon-xs {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+.icon-sm {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.icon-md,
+.icon-base {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.icon-lg {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* Fix SVG icons */
+.icon svg,
+.icon use {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
+/* Fix icon colors to match text */
+.dropdown-item .icon,
+.menu-item-icon .icon,
+.dropdown-item-icon .icon {
+    color: inherit !important;
+    --icon-stroke: currentColor !important;
+    --icon-fill: currentColor !important;
+}
+
+/* Fix quick action buttons (New Lead, New Account, etc.) */
+.btn-group .dropdown-item,
+.page-actions .dropdown-item {
+    position: relative !important;
+}
+
+.btn-group .dropdown-item .menu-item-icon,
+.page-actions .dropdown-item .menu-item-icon {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-flex !important;
+}
+
+/* Ensure icons are visible in all dropdown contexts */
+.grey-link .menu-item-icon,
+.dropdown-item .menu-item-icon {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fix icon spacing in action menus */
+.page-actions .dropdown-menu .dropdown-item {
+    padding-left: var(--padding-md, 12px) !important;
+    padding-right: var(--padding-md, 12px) !important;
+}
+
+.page-actions .dropdown-menu .menu-item-icon {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: var(--margin-sm, 8px) !important;
+}
+
+/* Fix icon rendering for all icon types */
+[class*="fa-"],
+[class^="fa-"] {
+    font-family: 'FontAwesome' !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    display: inline-block !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Ensure icons don't break layout */
+.icon,
+.menu-item-icon,
+.dropdown-item-icon {
+    flex-shrink: 0 !important;
+    min-width: 16px !important;
+}
+
+/* Fix icon alignment in flex containers */
+.flex .menu-item-icon,
+.flex .dropdown-item-icon {
+    align-self: center !important;
+}
+
+/* Fix focus states for accessibility */
+*:focus {
+    outline: 2px solid #e74c3c !important;
+    outline-offset: 2px !important;
+}
+
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #e74c3c !important;
+    outline-offset: 2px !important;
+}
+
+/* ============================================
+   DARK THEME FOR LOGIN PAGE
+   ============================================ */
+
+/* Dark background for login page body */
+body[data-path="login"],
+body[data-path="/login"] {
+    background-color: #000000 !important;
+    background-image: none !important;
+    min-height: 100vh !important;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%) !important;
+    background-attachment: fixed !important;
+}
+
+/* Modern browser support with :has() selector */
+@supports selector(:has(*)) {
+    body:has(.for-login),
+    body:has(section.for-login) {
+        background-color: #000000 !important;
+        background-image: none !important;
+        min-height: 100vh !important;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%) !important;
+        background-attachment: fixed !important;
+    }
+}
+
+/* Dark login card styling */
+.for-login .page-card,
+.for-forgot .page-card,
+.for-login-with-email-link .page-card,
+.for-signup .page-card,
+.for-email-login .page-card {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333333 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Dark card head styling */
+.page-card-head {
+    color: #ffffff !important;
+}
+
+.page-card-head h4 {
+    color: #ffffff !important;
+}
+
+/* Dark input field styling */
+.for-login .page-card-body input[type="text"],
+.for-login .page-card-body input[type="email"],
+.for-login .page-card-body input[type="password"],
+.for-forgot .page-card-body input[type="email"],
+.for-login-with-email-link .page-card-body input[type="email"],
+.for-signup .page-card-body input[type="text"],
+.for-signup .page-card-body input[type="email"],
+.for-signup .page-card-body input[type="password"],
+.for-email-login .page-card-body input[type="text"],
+.for-email-login .page-card-body input[type="email"],
+.for-email-login .page-card-body input[type="password"] {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+    border: 1px solid #444444 !important;
+}
+
+.for-login .page-card-body input[type="text"]:focus,
+.for-login .page-card-body input[type="email"]:focus,
+.for-login .page-card-body input[type="password"]:focus,
+.for-forgot .page-card-body input[type="email"]:focus,
+.for-login-with-email-link .page-card-body input[type="email"]:focus,
+.for-signup .page-card-body input[type="text"]:focus,
+.for-signup .page-card-body input[type="email"]:focus,
+.for-signup .page-card-body input[type="password"]:focus,
+.for-email-login .page-card-body input[type="text"]:focus,
+.for-email-login .page-card-body input[type="email"]:focus,
+.for-email-login .page-card-body input[type="password"]:focus {
+    background-color: #333333 !important;
+    border-color: #e74c3c !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25) !important;
+}
+
+/* Placeholder text color for dark theme */
+.for-login .page-card-body input::placeholder,
+.for-forgot .page-card-body input::placeholder,
+.for-login-with-email-link .page-card-body input::placeholder,
+.for-signup .page-card-body input::placeholder,
+.for-email-login .page-card-body input::placeholder {
+    color: #888888 !important;
+    opacity: 1 !important;
+}
+
+/* Dark text colors */
+.for-login .text-muted,
+.for-forgot .text-muted,
+.for-login-with-email-link .text-muted,
+.for-signup .text-muted,
+.for-email-login .text-muted {
+    color: #aaaaaa !important;
+}
+
+.for-login .forgot-password-message a,
+.for-forgot .sign-up-message a,
+.for-signup .sign-up-message a,
+.for-email-login .sign-up-message a {
+    color: #e74c3c !important;
+}
+
+.for-login .forgot-password-message a:hover,
+.for-forgot .sign-up-message a:hover,
+.for-signup .sign-up-message a:hover,
+.for-email-login .sign-up-message a:hover {
+    color: #ff6b6b !important;
+}
+
+/* Dark divider styling */
+.login-divider {
+    color: #666666 !important;
+}
+
+/* Dark social login buttons */
+.btn-login-option {
+    background-color: #2d2d2d !important;
+    border-color: #444444 !important;
+    color: #ffffff !important;
+}
+
+.btn-login-option:hover {
+    background-color: #3d3d3d !important;
+    border-color: #555555 !important;
+    color: #ffffff !important;
+}
+
+/* Dark toggle password button */
+.toggle-password {
+    color: #aaaaaa !important;
+}
+
+.toggle-password:hover {
+    color: #ffffff !important;
+}
+
+/* Dark field icons */
+.field-icon {
+    color: #888888 !important;
+}
+
+/* Ensure logo is visible on dark background */
+.page-card-head .app-logo {
+    filter: brightness(1.1) !important;
+}
+
+/* Dark signup disabled message */
+.signup-disabled .indicator.gray {
+    background-color: #333333 !important;
+    color: #aaaaaa !important;
+}
+
+.signup-disabled .text-muted {
+    color: #888888 !important;
+}
+

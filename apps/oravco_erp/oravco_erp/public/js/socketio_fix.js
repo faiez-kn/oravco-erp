@@ -3,6 +3,14 @@
 (function() {
 	'use strict';
 	
+	// Ensure dev_server is false for Docker/production
+	if (typeof window !== 'undefined') {
+		// In Docker, we're not in dev mode
+		if (window.location.hostname !== 'localhost' || window.location.port !== '8000') {
+			window.dev_server = false;
+		}
+	}
+	
 	// Wait for frappe.realtime to be available
 	function fixSocketIOConnection() {
 		if (typeof frappe !== 'undefined' && frappe.realtime && frappe.realtime.get_host) {
@@ -11,12 +19,28 @@
 			
 			frappe.realtime.get_host = function(port = 9000) {
 				let host = window.location.origin;
-				if (window.dev_server) {
-					// Use original logic for dev server
-					return originalGetHost(port);
+				
+				// Force use of nginx proxy path for Docker/production
+				// Check if we're in Docker by checking if dev_server is explicitly false
+				// or if we're accessing through port 8090 (nginx frontend)
+				if (window.dev_server === false || window.location.port === '8090' || 
+				    (window.location.hostname !== 'localhost' && window.location.port !== '8000')) {
+					// In production/Docker, use /socket.io path through nginx
+					return host + `/socket.io/${frappe.boot.sitename}`;
 				}
-				// In production/Docker, use /socket.io path through nginx
-				return host + `/socket.io/${frappe.boot.sitename}`;
+				
+				// Use original logic for dev server
+				return originalGetHost(port);
+			};
+			
+			// Override init to ensure proper connection
+			const originalInit = frappe.realtime.init.bind(frappe.realtime);
+			frappe.realtime.init = function(port, lazy_connect) {
+				// Ensure dev_server is false
+				if (window.location.port === '8090' || window.location.hostname !== 'localhost') {
+					window.dev_server = false;
+				}
+				return originalInit(port, lazy_connect);
 			};
 			
 			// If socket is already initialized, reinitialize it
@@ -28,7 +52,9 @@
 				// Clear socket reference
 				frappe.realtime.socket = null;
 				// Reinitialize with correct path
-				frappe.realtime.init();
+				setTimeout(function() {
+					frappe.realtime.init();
+				}, 100);
 			}
 			
 			console.log('✓ WebSocket connection path fixed for Docker/production');

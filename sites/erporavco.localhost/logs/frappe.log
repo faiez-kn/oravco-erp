@@ -1,0 +1,6 @@
+2025-11-27 08:33:11,946 ERROR frappe New Exception collected in error log
+Site: erporavco.localhost
+Form Dict: {'cmd': 'frappe.www.login.send_login_link', 'email': 'faiez@oravco.com'}
+2025-11-27 09:06:47,331 ERROR frappe New Exception collected in error log
+Site: erporavco.localhost
+Form Dict: {'doctype': 'Purchase Invoice', 'name': 'ACC-PINV-2025-00001', 'format': 'Standard', 'no_letterhead': '1', 'letterhead': 'No Letterhead', 'settings': '{}', '_lang': 'en', 'cmd': 'frappe.utils.print_format.download_pdf', 'pdf_generator': 'wkhtmltopdf'}
